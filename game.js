@@ -3,6 +3,10 @@ enchant();
 var time = 0;
 var LimitTime = 16*60;
 
+var DISPLAY_STATE = 0;
+var HIT_STATE = 1;
+var DREATE_STATE = 2;
+
 window.onload = function(){
     var game = new Game(320,320);
     game.fps = 16;
@@ -44,11 +48,24 @@ window.onload = function(){
             this.frame = 0;
             this.x = x;
             this.y = y;
+            this.tick = 0;
+            this.state = DISPLAY_STATE;
             this.addEventListener(Event.TOUCH_START,function(){
                 game.rootScene.removeChild(this);
             });
             game.rootScene.addChild(this);
-        }
+        },
+            onenterframe:function(){
+                if(this.state == DISPLAY_STATE){
+                    this.tick++;
+                    if(this.tick % 48 == 0){
+                        this.state = DREATE_STATE
+                    }
+                }else if(this.state == DREATE_STATE){
+                    this.tick++;
+                    game.rootScene.removeChild(this);
+                } 
+            }
     });
     
     game.onload = function(){
