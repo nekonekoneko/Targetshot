@@ -1,39 +1,46 @@
 enchant();
+
+var IMG = ['images/chara0.png','images/chara1.png']
+
 window.onload = function() {
-    //ゲームオブジェクトの生成
+    
     var game = new Game(320, 320);
     game.fps = 16;
-
-    //画像の読み込み
-    game.preload('http://enchantjs.com/assets/images/chara1.gif');
-
-    //ロード完了時に呼ばれる
-    game.onload = function() {
-        //スプライトの生成
-        var bear   = new Sprite(32, 32);
-        bear.image = game.assets['http://enchantjs.com/assets/images/chara1.gif'];
-        bear.tick  = 0;
-        bear.anim  = [5, 6, 5, 7];
-        game.rootScene.addChild(bear);
+    game.preload(IMG);
+    game.tick = 0;
+    var Spr = enchant.Class.create(enchant.Sprite,{
+        initialize: function(type){ 
+        enchant.Sprite.call(this,32,32);
+        this.x = Math.random()*20;
+        this.y = 160;
         
-        //スプライトの定期処理
-        bear.addEventListener(Event.ENTER_FRAME, function() {
-            //スプライトのフレームの指定
-            bear.tick++;
-            bear.frame = bear.anim[bear.tick % 4];
-            
-            //右向き
-            if (bear.scaleX == 1) {
-                bear.x += 30;
-                //向き変更
-                if (bear.x > 320 - 32) bear.scaleX = -1;
-            } 
-            //左向き
-            else {
-                bear.x -= 3;
-                //向き変更
-                if (bear.x < 0) bear.scaleX = 1;
+        this.frame = 5;
+        game.rootScene.addChild(this);
+        }
+    });
+
+ var Human = enchant.Class.create(Spr,{
+     initialize: function(){
+           Spr.call(this);
+           this.image = game.assets[IMG[0]];
+            game.rootScene.addChild(this);
+        }
+    });
+        /*var bear   = new Sprite(32, 32);
+        bear.x = Math.random()*200;
+        bear.y = 0;
+        bear.image = game.assets['images/chara1.png'];
+        bear.farme  = 5;
+        game.rootScene.addChild(bear);
+    };*/
+
+    
+    game.onload = function(){
+        game.addEventListener(Event.ENTER_FRAME, function() {
+            if(game.tick % 16 == 0){
+                new Human();
             }
+            game.tick++;
         });
     };
 
