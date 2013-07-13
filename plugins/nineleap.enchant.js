@@ -28,7 +28,7 @@
     /**
      * @type {Object}
      */
-    enchant.nineleap = { assets: ['start.png', 'end.png'] };
+    enchant.nineleap = { assets: ['images/start.png', 'images/end.png'] };
 
     /**
      * @scope enchant.nineleap.Core.prototype

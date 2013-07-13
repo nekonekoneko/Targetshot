@@ -2,6 +2,7 @@ enchant();
 
 var time = 0;
 var LimitTime = 16*60;
+var addscore = 10;
 
 var DISPLAY_STATE = 0;
 var HIT_STATE = 1;
@@ -35,11 +36,15 @@ window.onload = function(){
             }else{};
             time = Math.floor(LimitTime / 16);
             this.text = "タイム：" + time + "<br>スコア：" + game.score;
+            if(time == -1){
+                game.end(game.score,'あなたのスコアは' + game.score + 'です。');
+            }
         });
         game.rootScene.addChild(this);
         }
     });
     
+
     //的のクラス
     var Target = enchant.Class.create(Sprite,{
      initialize: function(x,y){
@@ -51,6 +56,7 @@ window.onload = function(){
             this.tick = 0;
             this.state = DISPLAY_STATE;
             this.addEventListener(Event.TOUCH_START,function(){
+                game.score += addscore; 
                 game.rootScene.removeChild(this);
             });
             game.rootScene.addChild(this);
@@ -67,6 +73,8 @@ window.onload = function(){
                 } 
             }
     });
+    
+        
     
     game.onload = function(){
         
