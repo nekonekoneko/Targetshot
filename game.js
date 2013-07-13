@@ -1,12 +1,13 @@
 enchant();
 
 var time = 0;
+var LimitTime = 16*60;
 
 window.onload = function(){
     var game = new Game(320,320);
     game.fps = 16;
-    game.preload('img/wilderness.gif');
-    game.tick = 16*60; 
+    game.preload('img/wilderness.gif','img/target.png');
+    game.tick = 0; 
     game.score = 0;    
     
     //背景画像のクラス
@@ -19,19 +20,38 @@ window.onload = function(){
     });
     
     //スコアとタイムのクラス
-     var timeLabel = enchant.Class.create(TimeLabel,{
+     var ScoreTime = enchant.Class.create(Label,{
      initialize: function(){
-           TimeLabel.call('countdown');
+           Label.call(this);
            this.x = 250; this.y = 10;
         //this._element.style.zIndex = 300;
         this.addEventListener(Event.ENTER_FRAME, function(){
-            this.time = 60;   
+            if(time >= 0){
+                LimitTime--;
+            }else{};
+            time = Math.floor(LimitTime / 16);
+            this.text = "タイム：" + time + "<br>スコア：" + game.score;
         });
         game.rootScene.addChild(this);
         }
     });
     
-    game.onloadL = function(){
+    //的のクラス
+    var Target = enchant.Class.create(Sprite,{
+     initialize: function(x,y){
+           Sprite.call(this,32,32);
+           this.image = game.assets['img/target.png'];
+            this.frame = 0;
+            this.x = x;
+            this.y = y;
+            this.addEventListener(Event.TOUCH_START,function(){
+                game.rootScene.removeChild(this);
+            });
+            game.rootScene.addChild(this);
+        }
+    });
+    
+    game.onload = function(){
         
         //背景画像の生成
         var bg = new Background();
@@ -40,7 +60,11 @@ window.onload = function(){
        var scoretime = new ScoreTime();
         
         game.addEventListener(Event.ENTER_FRAME,function(){
-        
+            if(game.tick % 32 == 0){
+                //的の表示
+                var tardet = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32)
+            }
+            game.tick++;
         });
     };
     game.start();
