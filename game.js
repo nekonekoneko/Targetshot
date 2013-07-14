@@ -6,9 +6,10 @@ var addscore = 10;
 
 var DISPLAY_STATE = 0;
 var HIT_STATE = 1;
-var DREATE_STATE = 2;
+var DLEATE_STATE = 2;
 
 window.onload = function(){
+    //ゲーム画面の定義
     var game = new Game(320,320);
     game.fps = 16;
     game.preload('img/wilderness.gif','img/target.png');
@@ -27,8 +28,8 @@ window.onload = function(){
     //スコアとタイムのクラス
      var ScoreTime = enchant.Class.create(Label,{
      initialize: function(){
-           Label.call(this);
-           this.x = 250; this.y = 10;
+        Label.call(this);
+        this.x = 250; this.y = 10;
         //this._element.style.zIndex = 300;
         this.addEventListener(Event.ENTER_FRAME, function(){
             if(time >= 0){
@@ -65,16 +66,47 @@ window.onload = function(){
                 if(this.state == DISPLAY_STATE){
                     this.tick++;
                     if(this.tick % 48 == 0){
-                        this.state = DREATE_STATE
+                        this.state = DLEATE_STATE;
                     }
-                }else if(this.state == DREATE_STATE){
+                }else if(this.state == DLEATE_STATE){
                     this.tick++;
                     game.rootScene.removeChild(this);
                 } 
             }
     });
     
-        
+    //高得点の的のクラス
+    var SpecialTarget = enchant.Class.create(Sprite,{
+        initialize: function(x,y){
+            Sprite.call(this,32,32);
+            this.image = game.assets['img/target.png'];
+            this.frame = 2;
+            this.x = x;
+            this.y = y;
+            this.tick = 1;
+            this.state = DISPLAY_STATE;
+            this.addEventListener(Event.TOUCH_START,function(){
+                game.score += addscore;
+                game.rootScene.removeChild(this);
+            });
+            game.rootScene.addChild(this);
+        },
+            onenterframe:function(){
+                if(this.state == DISPLAY_STATE){
+                    this.tick++;
+                    if(this.tick % 32 == 0){
+                        this.state = DLEATE_STATE;
+                    }
+                }else if(this.state == DLEATE_STATE){
+                    this.tick++;
+                    game.rootScene.removeChild(this);
+                }
+                    
+                }
+                
+                });
+    
+    
     
     game.onload = function(){
         
@@ -85,12 +117,23 @@ window.onload = function(){
        var scoretime = new ScoreTime();
         
         game.addEventListener(Event.ENTER_FRAME,function(){
+            game.tick++;
             if(game.tick % 32 == 0){
                 //的の表示
-                var tardet = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32)
+                var target = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32);
             }
-            game.tick++;
+            
+           if(game.tick % 80 == 0){    
+                //高得点の的の表示
+                var specialtarget = new SpecialTarget(Math.floor(Math.random()*290-80)+80,Math.floor(Math.random()*200-80)+80);
+                }
+                
+                
+            
         });
     };
+    
+        
+    
     game.start();
 };
