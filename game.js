@@ -99,7 +99,7 @@ window.onload = function(){
             onenterframe:function(){
                 if(this.state == DISPLAY_STATE){
                     this.tick++;
-                    if(this.tick % 32 == 0){
+                    if(this.tick % 16 == 0){
                         this.state = DLEATE_STATE;
                     }
                 }else if(this.state == DLEATE_STATE){
@@ -123,16 +123,25 @@ window.onload = function(){
         
         game.addEventListener(Event.ENTER_FRAME,function(){
             game.tick++;
-            if(game.tick % 32 == 0){
-                //的の表示
-                var target = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32);
-            }
+            
             
            if(game.tick % 80 == 0){    
                 //高得点の的の表示
                 var specialtarget = new SpecialTarget(Math.floor(Math.random()*290-80)+80,Math.floor(Math.random()*200-80)+80);
                 }
-                
+               
+            if(game.tick / 16 <= 30 ){
+                if(game.tick % 32 == 0){
+                    //的の表示
+                    var target = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32);
+                } 
+            }else if(game.tick / 16 >= 30){
+                if(game.tick % 8 == 0){
+                    //的の大量表示
+                    var target = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32);
+                }
+            }
+                    
                 
             
         });
