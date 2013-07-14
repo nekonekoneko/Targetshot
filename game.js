@@ -123,12 +123,6 @@ window.onload = function(){
         
         game.addEventListener(Event.ENTER_FRAME,function(){
             game.tick++;
-            
-            
-           if(game.tick % 80 == 0){    
-                //高得点の的の表示
-                var specialtarget = new SpecialTarget(Math.floor(Math.random()*290-80)+80,Math.floor(Math.random()*200-80)+80);
-                }
                
             if(game.tick / 16 <= 30 ){
                 if(game.tick % 32 == 0){
@@ -141,6 +135,10 @@ window.onload = function(){
                     var target = new Target(Math.floor(Math.random()*290-32)+32,Math.floor(Math.random()*200-32)+32);
                 }
             }
+             if(game.tick % 80 == 0){    
+                //高得点の的の表示
+                var specialtarget = new SpecialTarget(Math.floor(Math.random()*290-80)+80,Math.floor(Math.random()*200-80)+80);
+             }
                     
                 
             
