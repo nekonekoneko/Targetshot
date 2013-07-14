@@ -60,7 +60,7 @@ window.onload = function(){
             this.state = DISPLAY_STATE;
             this.addEventListener(Event.TOUCH_START,function(){
                 game.score += addscore; 
-                game.rootScene.removeChild(this);
+                this.state = HIT_STATE;
             });
             game.rootScene.addChild(this);
         },
@@ -70,10 +70,16 @@ window.onload = function(){
                     if(this.tick % 48 == 0){
                         this.state = DLEATE_STATE;
                     }
-                }else if(this.state == DLEATE_STATE){
+                }else if(this.state == HIT_STATE){
+                    this.frame = 1;
+                    this.tick++;
+                    if(this.tick % 16 == 0){
+                        this.state = DLEATE_STATE;
+                    }
+                } else if(this.state == DLEATE_STATE){
                     this.tick++;
                     game.rootScene.removeChild(this);
-                } 
+                }
             }
     });
     
@@ -89,11 +95,9 @@ window.onload = function(){
             this.state = DISPLAY_STATE;
             this.addEventListener(Event.TOUCH_START,function(){
                 game.score += addspecialscore; 
-                game.rootScene.removeChild(this);
+                this.state = HIT_STATE;
             });
-            
-             
-           
+
             game.rootScene.addChild(this);
         },
             onenterframe:function(){
@@ -102,7 +106,13 @@ window.onload = function(){
                     if(this.tick % 16 == 0){
                         this.state = DLEATE_STATE;
                     }
-                }else if(this.state == DLEATE_STATE){
+                }else if(this.state == HIT_STATE){
+                    this.frame = 3;
+                    this.tick++;
+                    if(this.tick % 16 == 0){
+                        this.state = DLEATE_STATE;
+                    }
+                } else if(this.state == DLEATE_STATE){
                     this.tick++;
                     game.rootScene.removeChild(this);
                 }
