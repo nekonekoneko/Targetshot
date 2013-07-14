@@ -4,6 +4,8 @@ var time = 0;
 var LimitTime = 16*60;
 var addscore = 10;
 
+var addspecialscore = 30;
+
 var DISPLAY_STATE = 0;
 var HIT_STATE = 1;
 var DLEATE_STATE = 2;
@@ -83,12 +85,15 @@ window.onload = function(){
             this.frame = 2;
             this.x = x;
             this.y = y;
-            this.tick = 1;
+            this.tick = 0;
             this.state = DISPLAY_STATE;
             this.addEventListener(Event.TOUCH_START,function(){
-                game.score += addscore;
+                game.score += addspecialscore; 
                 game.rootScene.removeChild(this);
             });
+            
+             
+           
             game.rootScene.addChild(this);
         },
             onenterframe:function(){
